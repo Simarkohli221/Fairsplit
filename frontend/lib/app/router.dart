@@ -1,6 +1,8 @@
+
 import 'package:go_router/go_router.dart';
 
 import '../features/auth/screens/login_screen.dart';
+import '../features/auth/screens/register_screen.dart';
 import '../features/home/screens/home_screen.dart';
 import '../features/splash/screens/splash_screen.dart';
 
@@ -9,6 +11,7 @@ class AppRouter {
 
   static const splash = "/";
   static const login = "/login";
+  static const register = "/register";
   static const home = "/home";
 
   static final router = GoRouter(
@@ -21,6 +24,10 @@ class AppRouter {
       GoRoute(
         path: login,
         builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: register,
+        builder: (context, state) => const RegisterScreen(),
       ),
       GoRoute(
         path: home,
