@@ -1,13 +1,14 @@
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../shared/widgets/app_logo.dart';
 import '../../../../shared/widgets/app_scaffold.dart';
 import '../../../../shared/widgets/custom_text_field.dart';
 import '../../../../shared/widgets/primary_button.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../controllers/auth_controller.dart';
-import 'package:go_router/go_router.dart';
 import '../../../app/router.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -19,7 +20,6 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
-
   final _passwordController = TextEditingController();
 
   bool _obscurePassword = true;
@@ -109,44 +109,42 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             const Gap(8),
 
             PrimaryButton(
-                text: "Login",
-                loading: ref.watch(authControllerProvider),
-                onPressed: () async {
-                    final controller = ref.read(
-                    authControllerProvider.notifier,
-                    );
+              text: "Login",
+              loading: ref.watch(authControllerProvider),
+              onPressed: () async {
+                final controller = ref.read(
+                  authControllerProvider.notifier,
+                );
 
-                    final messenger = ScaffoldMessenger.of(context);
-                    final router = GoRouter.of(context);
+                final messenger = ScaffoldMessenger.of(context);
+                final router = GoRouter.of(context);
 
-                    final success = await controller.login(
-                    email: _emailController.text.trim(),
-                    password: _passwordController.text,
-                    );
+                final success = await controller.login(
+                  email: _emailController.text.trim(),
+                  password: _passwordController.text,
+                );
 
-                    if (!mounted) return;
+                if (!mounted) return;
 
-                    if (success) {
-                    router.go(AppRouter.home);
-                    } else {
-                    messenger.showSnackBar(
-                        const SnackBar(
-                        content: Text(
-                            "Invalid email or password",
-                        ),
-                        ),
-                    );
-                    }
-                },
+                if (success) {
+                  router.go(AppRouter.home);
+                } else {
+                  messenger.showSnackBar(
+                    const SnackBar(
+                      content: Text("Invalid email or password"),
+                    ),
+                  );
+                }
+              },
             ),
+
             const Gap(28),
 
             Row(
               children: [
                 const Expanded(child: Divider()),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Text(
                     "OR",
                     style: TextStyle(
@@ -173,11 +171,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  "Don't have an account?",
-                ),
+                const Text("Don't have an account?"),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.go(AppRouter.register);
+                  },
                   child: const Text("Register"),
                 ),
               ],
